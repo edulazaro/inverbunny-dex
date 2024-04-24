@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
@@ -59,7 +59,8 @@ contract Dex
         tokenList.push(ticker);
     }
 
-    function deposit(uint amount, bytes32 ticker) tokenExist(ticker) external {
+    function deposit(uint amount, bytes32 ticker) tokenExist(ticker) external
+    {
         IERC20(tokens[ticker].tokenAddress).transferFrom(msg.sender, address(this), amount);
         traderBalances[msg.sender][ticker] += amount;
     }

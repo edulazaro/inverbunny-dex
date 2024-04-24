@@ -1,3 +1,4 @@
+const { expectRevert } = require('@openzeppelin/test-helpers');
 const Dai = artifacts.require('mocks/Dai.sol');
 const Bat = artifacts.require('mocks/Bat.sol');
 const Rep = artifacts.require('mocks/Rep.sol');
@@ -5,7 +6,7 @@ const Zrx = artifacts.require('mocks/Zrx.sol');
 const Dex = artifacts.require('Dex.sol');
 
 contract('Dex', (accounts) => {
-    let dai, bat, rep, zrx;
+    let dai, bat, rep, zrx, dex;
 
     const [trader1, trader2] = [accounts[1], accounts[2]];
 
@@ -22,11 +23,7 @@ contract('Dex', (accounts) => {
             Zrx.new(),
         ]);
 
-        const dex = await Dex.new();
-
-        await Promise.all([
-            dex.addToken
-        ]);
+        dex = await Dex.new();
 
         await Promise.all([
             dex.addToken(DAI, dai.address),
@@ -38,14 +35,27 @@ contract('Dex', (accounts) => {
         const amount = web3.utils.toWei('1000');
 
         const seedTokenBalance = async (token, trader) => {
-            await token.faucet(trader, amount);
-            await token.approve(
-                dex.address,
-                amount,
-                {from: trader}
-            );
+            try {
+                await token.faucet(trader, amount);
+                await token.approve(
+                    dex.address,
+                    amount,
+                    {from: trader}
+                );
+            } catch (error) {
+                console.error(`Error seeding token balance: ${error.message}`);
+            }
         }
 
+        for (const token of [dai, bat, rep, zrx]) {
+            await seedTokenBalance(token, trader1);
+        }
+
+        for (const token of [dai, bat, rep, zrx]) {
+            await seedTokenBalance(token, trader2);
+        }
+
+        /*
         await Promise.all(
             [dai, bat, rep, zrx].map(
                 token => seedTokenBalance(token, trader1)
@@ -56,6 +66,35 @@ contract('Dex', (accounts) => {
             [dai, bat, rep, zrx].map(
                 token => seedTokenBalance(token, trader2)
             )
+        );
+        */
+    });
+
+    it('should deposit tokens', async () => {
+        const amount = web3.utils.toWei('100');
+    
+        // Check if the contract and tokens are set up correctly
+        console.log('Contract address:', dex.address);
+        console.log('DAI address:', dai.address);
+    
+        await dex.deposit(
+          amount,
+          DAI,
+          {from: trader1}
+        );
+    
+        const balance = await dex.traderBalances(trader1, DAI);
+        assert(balance.toString() === amount, "Balance should match the deposited amount");
+    });
+
+    it('should NOT deposit tokens if token does not exist', async () => {
+        await expectRevert(
+          dex.deposit(
+            web3.utils.toWei('100'),
+            web3.utils.fromAscii('TOKEN-DOES-NOT-EXIST'),
+            {from: trader1}
+          ),
+          'this token does not exist'
         );
     });
 });
