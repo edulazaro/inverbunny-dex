@@ -30,7 +30,7 @@ contract Dex
 
     mapping(bytes32 => Token) public tokens;
     bytes32[] public tokenList;
-    mapping (address => mapping(bytes32 => uint)) public traderBalances;
+    mapping(address => mapping(bytes32 => uint256)) public traderBalances;
     mapping(bytes32 => mapping(uint => Order[])) public orderBook; 
     uint public nextOrderId;
     uint public nextTradeId;
@@ -51,6 +51,11 @@ contract Dex
     constructor ()
     {
         admin = msg.sender;
+    }
+
+    function getTraderBalances(address account, bytes32 ticker) public view returns (uint) 
+    {
+        return traderBalances[account][ticker];
     }
 
     function addToken (bytes32 ticker, address tokenAddress) onlyAdmin() external
