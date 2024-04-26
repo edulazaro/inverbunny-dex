@@ -4,6 +4,8 @@ An ERC20 token exchange integrated with MetaMask, developed with Truffle, Solidi
 
 The exchange runs with the stablecoin DAI as the main currency for the trades, allowing to deposit and get back tokens, as well as to create both limit and market orders. Some ERC20 tokens are included by default, but real tokens should be added when deployed on the testnet or on the mainnet.
 
+Please note that this DEX has been created for demonstration purposes. Despite it can be deployed to the mainnet, it will require real users to operate, and real users require liquidity on the exchange.
+
 # Running
 
 Make sure you have Truffle installed globally on your system. Then access the aconsole:
