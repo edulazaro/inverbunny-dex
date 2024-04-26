@@ -1,13 +1,18 @@
+import { useState } from "react";
 import Dropdown from "./Dropdown.jsx";
 import { Link } from "react-router-dom";
 import { useMatch } from "react-router-dom";
 
+
 function Header({ user, tokens, tradeableTokens, selectToken }) {
+
+  const [menuOpened, setMenuOpened] = useState(false);
+
   return (
     <header id="header">
       <nav className="bg-white border-gray-200  border-b mb-4 border-gray-200 dark:bg-gray-900">
-        <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-          <div>
+        <div className="flex flex-wrap items-center justify-between mx-auto">
+          <div className="p-4">
             {useMatch("/wallet") && (
               <Dropdown
                 items={tokens.map((token) => ({
@@ -39,9 +44,10 @@ function Header({ user, tokens, tradeableTokens, selectToken }) {
           <button
             data-collapse-toggle="navbar-default"
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 mr-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="navbar-default"
             aria-expanded="false"
+            onClick={() => setMenuOpened(!menuOpened)}
           >
             <span className="sr-only">Open main menu</span>
             <svg
@@ -60,7 +66,7 @@ function Header({ user, tokens, tradeableTokens, selectToken }) {
               />
             </svg>
           </button>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+          <div className={`${menuOpened ? "" : "hidden"} mt-2 md:mt-0 w-full md:block md:w-auto md:mr-2`}>
             <ul className="font-medium flex flex-col bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link

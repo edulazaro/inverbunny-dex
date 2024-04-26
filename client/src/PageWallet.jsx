@@ -9,7 +9,7 @@ function PageWallet({
   return (
     <main className="container-fluid">
       <div id="wallet" className="p-2 row">
-        <div className="col-sm-4 first-col mx-auto">
+        <div className="max-w-xl first-col mx-auto">
           <div>
             <Wallet
               web3={web3}
