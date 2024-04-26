@@ -5,7 +5,7 @@ import Wallet from "./Wallet.jsx";
 import NewOrder from "./NewOrder.jsx";
 import AllOrders from "./AllOrders.jsx";
 import MyOrders from "./MyOrders.jsx";
-import AllTrades from './AllTrades.jsx';
+import AllTrades from "./AllTrades.jsx";
 import "./App.css";
 
 const SIDE = {
@@ -15,7 +15,6 @@ const SIDE = {
 
 function App({ web3, accounts, contracts }) {
   const [tokens, setTokens] = useState([]);
-  const [count, setCount] = useState(0);
 
   const [user, setUser] = useState({
     accounts: [],
@@ -61,21 +60,21 @@ function App({ web3, accounts, contracts }) {
     return { buy: orders[0], sell: orders[1] };
   };
 
-  const listenToTrades = token => {
+  const listenToTrades = (token) => {
     const tradeIds = new Set();
     setTrades([]);
-    const listener = contracts.dex.events.newTrade(
-      {
-        filter: {ticker: web3.utils.fromAscii(token.ticker).padEnd(66, "0")},
-        fromBlock: 0
+    const listener = contracts.dex.events
+      .newTrade({
+        filter: { ticker: web3.utils.fromAscii(token.ticker).padEnd(66, "0") },
+        fromBlock: 0,
       })
-      .on('data', newTrade => {
-        if(tradeIds.has(newTrade.returnValues.tradeId)) return;
+      .on("data", (newTrade) => {
+        if (tradeIds.has(newTrade.returnValues.tradeId)) return;
         tradeIds.add(newTrade.returnValues.tradeId);
-        setTrades(trades => ([...trades, newTrade.returnValues]));
+        setTrades((trades) => [...trades, newTrade.returnValues]);
       });
     setListener(listener);
-  }
+  };
 
   const selectToken = (token) => {
     setUser({ ...user, selectedToken: token });
@@ -145,27 +144,31 @@ function App({ web3, accounts, contracts }) {
     init();
   }, []);
 
-  useEffect(() => {
-    const init = async () => {
-      const [balances, orders] = await Promise.all([
-        getBalances(user.accounts[0], user.selectedToken),
-        getOrders(user.selectedToken),
-      ]);
-      listenToTrades(user.selectedToken);
-      setUser((user) => ({ ...user, balances }));
-      setOrders(orders);
-    };
-    if (typeof user.selectedToken !== "undefined") {
-      init();
+  useEffect(
+    () => {
+      const init = async () => {
+        const [balances, orders] = await Promise.all([
+          getBalances(user.accounts[0], user.selectedToken),
+          getOrders(user.selectedToken),
+        ]);
+        listenToTrades(user.selectedToken);
+        setUser((user) => ({ ...user, balances }));
+        setOrders(orders);
+      };
+      if (typeof user.selectedToken !== "undefined") {
+        init();
+      }
+    },
+    [user.selectedToken],
+    () => {
+      listener.unsubscribe();
     }
-  }, [user.selectedToken], () => {
-    listener.unsubscribe();
-  });
+  );
 
   if (typeof user.selectedToken === "undefined") {
     return <div>Loading...</div>;
   }
-console.log(user.selectedToken.ticker);
+  console.log(user.selectedToken.ticker);
   return (
     <>
       <div id="app">
@@ -178,44 +181,50 @@ console.log(user.selectedToken.ticker);
         <main className="container-fluid">
           <div className="row">
             <div className="col-sm-4 first-col">
+             <div>
               <Wallet
                 web3={web3}
                 user={user}
                 deposit={deposit}
                 withdraw={withdraw}
               />
-              {user.selectedToken.ticker.replace(/\0/g, '') !== "DAI" ? (
+              </div>
+              <div className="mt-4">
+              {user.selectedToken.ticker.replace(/\0/g, "") !== "DAI" ? (
                 <NewOrder
                   createMarketOrder={createMarketOrder}
                   createLimitOrder={createLimitOrder}
                 />
               ) : null}
+              </div>
             </div>
 
-            {(user.selectedToken.ticker.replace(/\0/g, '') !== "DAI") ? (
+            {user.selectedToken.ticker.replace(/\0/g, "") !== "DAI" ? (
               <div className="col-sm-8">
-                <AllTrades trades={trades}/>
-                <AllOrders orders={orders} />
-                <MyOrders
-                  orders={{
-                    buy: orders.buy.filter(
-                      (order) =>
-                        order.trader.toLowerCase() === accounts[0].toLowerCase()
-                    ),
-                    sell: orders.sell.filter(
-                      (order) =>
-                        order.trader.toLowerCase() === accounts[0].toLowerCase()
-                    ),
-                  }}
-                />
+                <AllTrades trades={trades} />
+                <div className="mt-4">
+                  <AllOrders orders={orders} />
+                </div>
+                <div className="mt-4">
+                  <MyOrders
+                    orders={{
+                      buy: orders.buy.filter(
+                        (order) =>
+                          order.trader.toLowerCase() ===
+                          accounts[0].toLowerCase()
+                      ),
+                      sell: orders.sell.filter(
+                        (order) =>
+                          order.trader.toLowerCase() ===
+                          accounts[0].toLowerCase()
+                      ),
+                    }}
+                  />
+                </div>
               </div>
             ) : null}
           </div>
         </main>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-
         <Footer />
       </div>
     </>

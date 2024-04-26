@@ -19,10 +19,9 @@ const DIRECTION = {
     }
 
     return (
-      <div id="wallet" className="card">
-        <h2 className="card-title">Wallet</h2>
-        <h3>Token balance for { user.selectedToken.ticker.replace(/\0/g, '') }</h3>
-        <div className="form-group row">
+      <div id="wallet" className="card p-2">
+        <h2 className="card-title">Token balance for { user.selectedToken.ticker.replace(/\0/g, '') }</h2>
+        <div className="form-group row mt-2">
           <label htmlFor="wallet" className="col-sm-4 col-form-label">Wallet</label>
           <div className="col-sm-8">
             <input 
@@ -33,7 +32,7 @@ const DIRECTION = {
             />
           </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group row mt-2">
           <label htmlFor="contract" className="col-sm-4 col-form-label">Dex</label>
           <div className="col-sm-8">
             <input 
@@ -44,9 +43,9 @@ const DIRECTION = {
             />
           </div>
         </div>
-        <h3>Transfer {user.selectedToken.ticker.replace(/\0/g, '')}</h3>
+        <h3 className="mt-4">Transfer {user.selectedToken.ticker.replace(/\0/g, '')}</h3>
         <form id="transfer" onSubmit={(e) => onSubmit(e)}>
-          <div className="form-group row">
+          <div className="form-group row mt-2">
             <label htmlFor="direction" className="col-sm-4 col-form-label">Direction</label>
             <div className="col-sm-8">
               <div id="direction" className="btn-group" role="group">
@@ -63,7 +62,7 @@ const DIRECTION = {
               </div>
             </div>
           </div>
-          <div className="form-group row">
+          <div className="form-group row mt-2">
             <label htmlFor="amount" className="col-sm-4 col-form-label">Amount</label>
             <div className="col-sm-8">
               <div className="input-group mb-3">

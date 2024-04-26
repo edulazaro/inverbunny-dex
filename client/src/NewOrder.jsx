@@ -29,10 +29,10 @@ function NewOrder({createMarketOrder, createLimitOrder}) {
   }
 
   return (
-    <div id="orders" className="card">
+    <div id="orders" className="card p-2">
       <h2 className="card-title">New Order</h2>
       <form onSubmit={(e) => onSubmit(e)}>
-        <div className="form-group row">
+        <div className="form-group row mt-2">
           <label htmlFor="type" className="col-sm-4 col-form-label">Type</label>
           <div className="col-sm-8">
             <div id="type" className="btn-group" role="group">
@@ -49,7 +49,7 @@ function NewOrder({createMarketOrder, createLimitOrder}) {
             </div>
           </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group row mt-2">
           <label htmlFor="side" className="col-sm-4 col-form-label">Side</label>
           <div className="col-sm-8">
             <div id="side" className="btn-group" role="group">
@@ -66,7 +66,7 @@ function NewOrder({createMarketOrder, createLimitOrder}) {
             </div>
           </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group row mt-2">
           <label className="col-sm-4 col-form-label" htmlFor="order-amount">Amount</label>
           <div className="col-sm-8">
             <input 
@@ -78,7 +78,7 @@ function NewOrder({createMarketOrder, createLimitOrder}) {
           </div>
         </div>
         {order.type === TYPE.MARKET ? null :
-          <div className="form-group row">
+          <div className="form-group row mt-2">
             <label className="col-sm-4 col-form-label" htmlFor="order-amount">Price</label>
             <div className="col-sm-8">
               <input 
@@ -90,7 +90,7 @@ function NewOrder({createMarketOrder, createLimitOrder}) {
             </div>
           </div>
         }
-        <div className="text-right">
+        <div className="text-right mt-2">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
       </form>
