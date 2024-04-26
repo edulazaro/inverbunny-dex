@@ -34,14 +34,12 @@ function Home({
       {user.selectedToken.ticker.replace(/\0/g, "")}
       <div className="row">
         <div className="col-sm-4 first-col">
-          <div className="mt-4">
             {user.selectedToken.ticker.replace(/\0/g, "") !== "DAI" ? (
               <NewOrder
                 createMarketOrder={createMarketOrder}
                 createLimitOrder={createLimitOrder}
               />
             ) : null}
-          </div>
         </div>
 
         {user.selectedToken.ticker.replace(/\0/g, "") !== "DAI" ? (

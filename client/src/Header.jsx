@@ -66,7 +66,7 @@ function Header({ user, tokens, tradeableTokens, selectToken }) {
               />
             </svg>
           </button>
-          <div className={`${menuOpened ? "" : "hidden"} mt-2 md:mt-0 w-full md:block md:w-auto md:mr-2`}>
+          <div className={`${menuOpened ? "" : "hidden"} mt-2 md:mt-0 w-full md:block md:w-auto md:mr-8`}>
             <ul className="font-medium flex flex-col bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link
