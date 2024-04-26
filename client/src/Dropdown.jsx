@@ -38,7 +38,7 @@ function Dropdown({ onSelect, activeItem, items }) {
                 className="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 onClick={(e) => selectItem(e, item.value)}
               >
-                {item.label == 'DAI' ? 'DAI' : item.label + '/DAI' }
+                {item.label}
               </a>
             </li>
           ))}

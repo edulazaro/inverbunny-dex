@@ -5,7 +5,6 @@ function AllOrders({orders}) {
 
   const renderList = (orders, side, className) => {
 
-    console.log(orders);
     return (
       <>
         <table className={`table table-striped mb-0 order-list ${className}`}>

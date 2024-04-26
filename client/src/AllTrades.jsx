@@ -9,6 +9,8 @@ import {
 } from "recharts";
 
 function AllTrades({ trades }) {
+
+  console.log(trades);
   const renderList = (trades, className) => {
     return (
       <>
@@ -44,8 +46,7 @@ function AllTrades({ trades }) {
         price: Number(trade.price),
         date: trade.date.toString()   // Convert BigInt to Number
       }));
-    
-      console.log(formattedTrades);
+
     return (
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={formattedTrades}>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getWeb3, getContracts } from './utils.js';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 
 function LoadingContainer() {
@@ -33,11 +34,13 @@ function LoadingContainer() {
   }
 
   return (
-    <App
-      web3={web3}
-      accounts={accounts}
-      contracts={contracts}
-    />
+    <BrowserRouter>
+      <App
+        web3={web3}
+        accounts={accounts}
+        contracts={contracts}
+      />
+    </BrowserRouter>
   );
 }
 
